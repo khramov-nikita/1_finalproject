@@ -3,7 +3,6 @@ import json
 import logging
 import os
 from collections import defaultdict
-from typing import Any
 
 import pandas as pd
 from pandas.core.frame import DataFrame
@@ -61,7 +60,7 @@ def return_result(data: dict) -> None:
     """
     try:
         app_logger.info("Выгрузка JSON файла")
-        with open(json_path, 'w', encoding='utf-8') as f:
+        with open(json_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
         print(json.dumps(data, indent=4, ensure_ascii=False))
     except Exception as e:
@@ -69,5 +68,3 @@ def return_result(data: dict) -> None:
         raise e
     else:
         return
-
-
