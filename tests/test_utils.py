@@ -1,10 +1,7 @@
-from unittest.mock import patch
-import json
-import os
-from src.services import cashback_categories
-from src.utils import read_xlsx, return_result, count_categories
 from typing import Any
-from pandas.core.frame import DataFrame
+from unittest.mock import patch
+
+from src.utils import count_categories, read_xlsx, return_result
 
 
 @patch("pandas.read_excel")

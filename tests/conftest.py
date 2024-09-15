@@ -1,5 +1,4 @@
 import pytest
-import pandas
 
 
 @pytest.fixture
@@ -273,5 +272,5 @@ def data_result() -> dict:
         "Бонусы": 0,
         "Переводы": 0,
         "Ж/д билеты": 4,
-        "Аптеки": 18
+        "Аптеки": 18,
     }
