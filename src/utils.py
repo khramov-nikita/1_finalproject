@@ -54,7 +54,7 @@ def count_categories(data: list, year: str, month: str) -> dict:
     return dict(categories_result)
 
 
-def return_result(data: dict) -> None:
+def return_dict_to_json(data: dict) -> None:
     """
     Функция записывает результат в JSON файл
     """

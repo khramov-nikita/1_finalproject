@@ -1,7 +1,7 @@
 from typing import Any
 from unittest.mock import patch
 
-from src.utils import count_categories, read_xlsx, return_result
+from src.utils import count_categories, read_xlsx, return_dict_to_json
 
 
 @patch("pandas.read_excel")
@@ -12,7 +12,7 @@ def test_read_xlsx(mock_read_excel: Any) -> None:
 
 @patch("json.dump")
 def test_json_dump(mock_json_dump: Any) -> None:
-    return_result({})
+    return_dict_to_json({})
     mock_json_dump.assert_called_once()
 
 

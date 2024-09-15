@@ -3,7 +3,7 @@ import os
 
 from pandas.core.frame import DataFrame
 
-from src.utils import count_categories, return_result
+from src.utils import count_categories, return_dict_to_json
 
 services_path = os.path.abspath(__file__)
 services_log_path = os.path.join(services_path[:-16], "data", "utils.log")
@@ -24,7 +24,7 @@ def cashback_categories(data: DataFrame, year: str, month: str) -> None:
         app_logger.info("Начало работы функции подсчёта кешбека")
         data_list: list = data.to_dict(orient="records", into=dict)
         categories_dict = count_categories(data_list, year, month)
-        return_result(categories_dict)
+        return_dict_to_json(categories_dict)
     except Exception as e:
         app_logger.error(f"Неудачная попытка подсчёта кешбека: {e}")
         raise e
