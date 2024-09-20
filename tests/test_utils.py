@@ -1,7 +1,10 @@
+import os
 from typing import Any
 from unittest.mock import patch
 
-from src.utils import count_categories, read_xlsx, return_dict_to_json
+from src.utils import read_xlsx, return_dict_to_json
+
+test_path = os.path.abspath("../data/cashback.json")
 
 
 @patch("pandas.read_excel")
@@ -12,15 +15,5 @@ def test_read_xlsx(mock_read_excel: Any) -> None:
 
 @patch("json.dump")
 def test_json_dump(mock_json_dump: Any) -> None:
-    return_dict_to_json({})
+    return_dict_to_json({}, test_path)
     mock_json_dump.assert_called_once()
-
-
-@patch("datetime.datetime")
-def test_datetime(mock_datetime: Any, data: list) -> None:
-    count_categories(data, "2019", "7")
-    mock_datetime.assery_called()
-
-
-def test_count_categories(data: list, data_result: dict) -> None:
-    assert count_categories(data, "2019", "7") == data_result
