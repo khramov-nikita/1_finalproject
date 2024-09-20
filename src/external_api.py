@@ -1,7 +1,10 @@
 import os
+import json
 
 import requests
 from dotenv import load_dotenv
+
+settings_path = os.path.abspath("../data/user_settings.json")
 
 
 def get_currency_rates() -> list:
@@ -9,40 +12,30 @@ def get_currency_rates() -> list:
     url = "https://www.cbr-xml-daily.ru/daily_json.js"
     response = requests.get(url)
     data = response.json()
-    result = [
-        {"currency": "USD", "rate": str(round(float(data["Valute"]["USD"]["Value"]), 2))},
-        {"currency": "EUR", "rate": str(round(float(data["Valute"]["EUR"]["Value"]), 2))},
-    ]
+    with open(settings_path, "r") as f:
+        settings = json.load(f)
+    result = []
+    for key in settings["user_currencies"]:
+        result.append({"currency": key, "rate": str(round(float(data["Valute"][key]["Value"]), 2))})
     return result
 
 
 def get_stock_prices() -> list:
     load_dotenv()
-    url_aapl = (
-        f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=AAPL&apikey={os.getenv("API_KEY_STOCK")}'
-    )
-    url_amzn = (
-        f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=AMZN&apikey={os.getenv("API_KEY_STOCK")}'
-    )
-    url_googl = (
-        f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=GOOGL&apikey={os.getenv("API_KEY_STOCK")}'
-    )
-    url_msft = (
-        f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey={os.getenv("API_KEY_STOCK")}'
-    )
-    url_tsla = (
-        f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=TSLA&apikey={os.getenv("API_KEY_STOCK")}'
-    )
-
-    aapl = requests.get(url_aapl)
-    amzn = requests.get(url_amzn)
-    googl = requests.get(url_googl)
-    msft = requests.get(url_msft)
-    tsla = requests.get(url_tsla)
-
-    data = [aapl, amzn, googl, msft, tsla]
+    with open(settings_path, "r") as f:
+        settings = json.load(f)
+    url_list = []
+    data = []
     data_raw = []
     result = []
+
+    for key in settings["user_stocks"]:
+
+        url_list.append(
+            f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={key}&apikey={os.getenv("API_KEY_STOCK")}'
+        )
+    for url in url_list:
+        data.append(requests.get(url))
 
     for url in data:
         data_raw.append(url.json())

@@ -2,6 +2,7 @@ import logging
 import os
 from collections import defaultdict
 from datetime import datetime
+from typing import Optional
 
 log_path = os.path.abspath("../data/processing.log")
 
@@ -71,8 +72,9 @@ def get_total_spent(data: list) -> float:
     app_logger.info("Получаем сумму платежей")
     result = 0.0
     for transaction in data:
-        result += transaction
-    result = round(-1.0 * result, 2)
+        if transaction >= 0:
+            result += transaction
+    result = round(result, 2)
     return result
 
 
@@ -90,7 +92,7 @@ def get_top_transactions(data: list) -> list:
     """
     app_logger.info("Получаем последние транзакции")
     result = []
-    for transaction in data[:4]:
+    for transaction in data[:5]:
         result.append(
             {
                 "date": transaction["Дата платежа"],
@@ -133,7 +135,7 @@ def get_cards(data: list) -> list:
     return result
 
 
-def set_date(data: list, date: None | str = None) -> list:
+def set_date(data: list, date: Optional[str] = None) -> list:
     """
     Функция возвращает список транзакций в текущем месяце, если не указана другая дата
     """
