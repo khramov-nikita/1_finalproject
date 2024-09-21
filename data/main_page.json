@@ -1,0 +1,84 @@
+{
+    "greeting": "Доброй ночи",
+    "cards": [
+        {
+            "last_digits": "7197",
+            "total_spent": 24576.63,
+            "cashback": 245.77
+        },
+        {
+            "last_digits": "5091",
+            "total_spent": 15193.33,
+            "cashback": 151.93
+        },
+        {
+            "last_digits": "4556",
+            "total_spent": 3775.7,
+            "cashback": 37.76
+        }
+    ],
+    "top_transactions": [
+        {
+            "date": "31.12.2021",
+            "amount": -160.89,
+            "category": "Супермаркеты",
+            "description": "Колхоз"
+        },
+        {
+            "date": "31.12.2021",
+            "amount": -64.0,
+            "category": "Супермаркеты",
+            "description": "Колхоз"
+        },
+        {
+            "date": "31.12.2021",
+            "amount": -118.12,
+            "category": "Супермаркеты",
+            "description": "Магнит"
+        },
+        {
+            "date": "31.12.2021",
+            "amount": -78.05,
+            "category": "Супермаркеты",
+            "description": "Колхоз"
+        },
+        {
+            "date": "31.12.2021",
+            "amount": -564.0,
+            "category": "Различные товары",
+            "description": "Ozon.ru"
+        }
+    ],
+    "currency_rates": [
+        {
+            "currency": "USD",
+            "rate": "92.58"
+        },
+        {
+            "currency": "EUR",
+            "rate": "103.38"
+        }
+    ],
+    "stock_prices": [
+        {
+            "stock": "AAPL",
+            "price": "228.2"
+        },
+        {
+            "stock": "AMZN",
+            "price": "191.6"
+        },
+        {
+            "stock": "GOOGL",
+            "price": "163.59"
+        },
+        {
+            "stock": "MSFT",
+            "price": "435.27"
+        },
+        {
+            "stock": "TSLA",
+            "price": "238.25"
+        }
+    ]
+}
