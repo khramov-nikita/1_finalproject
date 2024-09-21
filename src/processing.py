@@ -4,7 +4,9 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Optional
 
-log_path = os.path.abspath("../data/processing.log")
+path = os.path.abspath(__file__)
+log_path = os.path.join(path[:-18], "logs", "processing.log")
+
 
 app_logger = logging.getLogger(__name__)
 file_handler = logging.FileHandler(filename=log_path, encoding="utf-8")
@@ -72,9 +74,9 @@ def get_total_spent(data: list) -> float:
     app_logger.info("Получаем сумму платежей")
     result = 0.0
     for transaction in data:
-        if transaction >= 0:
+        if transaction <= 0:
             result += transaction
-    result = round(result, 2)
+    result = -round(result, 2)
     return result
 
 
@@ -96,7 +98,7 @@ def get_top_transactions(data: list) -> list:
         result.append(
             {
                 "date": transaction["Дата платежа"],
-                "amount": -float(transaction["Сумма платежа"]),
+                "amount": float(transaction["Сумма платежа"]),
                 "category": transaction["Категория"],
                 "description": transaction["Описание"],
             }

@@ -5,7 +5,8 @@ from unittest.mock import patch
 from src.services import cashback_categories
 from src.utils import read_xlsx
 
-test_path = os.path.abspath("../data/operations.xlsx")
+path = os.path.abspath(__file__)
+test_path = os.path.join(path[:-23], "data", "operations.xlsx")
 
 
 @patch("pandas.core.frame.DataFrame.to_dict")

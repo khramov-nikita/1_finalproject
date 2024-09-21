@@ -4,7 +4,8 @@ from unittest.mock import patch
 
 from src.utils import read_xlsx, return_dict_to_json
 
-test_path = os.path.abspath("../data/cashback.json")
+path = os.path.abspath(__file__)
+test_path = os.path.join(path[:-20], "data", "cashback.json")
 
 
 @patch("pandas.read_excel")

@@ -4,7 +4,8 @@ import os
 
 import pandas as pd
 
-log_path = os.path.abspath("../data/utils.log")
+path = os.path.abspath(__file__)
+log_path = os.path.join(path[:-13], "logs", "utils.log")
 
 app_logger = logging.getLogger(__name__)
 file_handler = logging.FileHandler(filename=log_path, encoding="utf-8")
@@ -14,13 +15,13 @@ app_logger.addHandler(file_handler)
 app_logger.setLevel(logging.DEBUG)
 
 
-def read_xlsx(path: str) -> list:
+def read_xlsx(file_path: str) -> list:
     """
     Функция читает XlSX файл
     """
     try:
         app_logger.info("Чтение XLSX файла")
-        result = pd.read_excel(path)
+        result = pd.read_excel(file_path)
         result_list: list = result.to_dict(orient="records", into=dict)
     except Exception as e:
         app_logger.error(f"Неудачная попытка чтения файла: {e}")
@@ -29,13 +30,13 @@ def read_xlsx(path: str) -> list:
         return result_list
 
 
-def return_dict_to_json(data: dict, path: str) -> None:
+def return_dict_to_json(data: dict, file_path: str) -> None:
     """
     Функция записывает результат в JSON файл
     """
     try:
         app_logger.info("Выгрузка JSON файла")
-        with open(path, "w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
         print(json.dumps(data, indent=4, ensure_ascii=False))
     except Exception as e:

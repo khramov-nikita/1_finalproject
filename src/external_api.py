@@ -4,10 +4,14 @@ import json
 import requests
 from dotenv import load_dotenv
 
-settings_path = os.path.abspath("../data/user_settings.json")
+path = os.path.abspath(__file__)
+settings_path = os.path.join(path[:-20], "data", "user_settings.json")
 
 
 def get_currency_rates() -> list:
+    """
+    Функция отправляет запрос на www.cbr-xml-daily.ru и получает курс валют
+    """
     load_dotenv()
     url = "https://www.cbr-xml-daily.ru/daily_json.js"
     response = requests.get(url)
@@ -21,6 +25,9 @@ def get_currency_rates() -> list:
 
 
 def get_stock_prices() -> list:
+    """
+    Функция отправляет запрос на www.alphavantage.co и получает акции
+    """
     load_dotenv()
     with open(settings_path, "r") as f:
         settings = json.load(f)

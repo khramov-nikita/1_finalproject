@@ -1,3 +1,4 @@
+import pandas as pd
 import pytest
 
 
@@ -278,19 +279,30 @@ def data_result() -> dict:
 
 @pytest.fixture
 def spent_list() -> list:
-    return [1.00000001, 2.200000001, 3.100000001]
+    return [- 1.00000001, - 2.200000001, - 3.100000001]
 
 
 @pytest.fixture
 def top_transactions() -> list:
     return [
-        {"date": "19.07.2019", "amount": 27.0, "category": "Дом и ремонт", "description": "OOO Nadezhda"},
-        {"date": "18.07.2019", "amount": 49.8, "category": "Супермаркеты", "description": "SPAR"},
-        {"date": "17.07.2019", "amount": 114.0, "category": "Фастфуд", "description": "IP Yakubovskaya M. V."},
-        {"date": "17.07.2019", "amount": 148.0, "category": "Транспорт", "description": "Яндекс Такси"},
+        {"date": "19.07.2019", "amount": - 27.0, "category": "Дом и ремонт", "description": "OOO Nadezhda"},
+        {"date": "18.07.2019", "amount": - 49.8, "category": "Супермаркеты", "description": "SPAR"},
+        {"date": "17.07.2019", "amount": - 114.0, "category": "Фастфуд", "description": "IP Yakubovskaya M. V."},
+        {"date": "17.07.2019", "amount": - 148.0, "category": "Транспорт", "description": "Яндекс Такси"},
+        {
+            "date": "16.07.2019",
+            "amount": 189.0,
+            "category": "Бонусы",
+            "description": "Вознаграждение за операции покупок",
+        },
     ]
 
 
 @pytest.fixture
 def cards() -> list:
-    return [{'last_digits': '7197', 'total_spent': 2247.22, 'cashback': 22.47}]
+    return [{"last_digits": "7197", "total_spent": 2247.22, "cashback": 22.47}]
+
+
+@pytest.fixture
+def result() -> pd.DataFrame:
+    return pd.DataFrame()

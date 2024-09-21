@@ -6,9 +6,10 @@ from src.external_api import get_currency_rates, get_stock_prices
 from src.processing import get_cards, get_greeting, get_top_transactions, set_date
 from src.utils import read_xlsx, return_dict_to_json
 
-log_path = os.path.abspath("../data/utils.log")
-json_path = os.path.abspath("../data/main_page.json")
-operations_path = os.path.abspath("../data/operations.xlsx")
+path = os.path.abspath(__file__)
+log_path = os.path.join(path[:-13], "logs", "views.log")
+json_path = os.path.join(path[:-13], "data", "main_page.json")
+operations_path = os.path.join(path[:-13], "data", "operations.xlsx")
 
 app_logger = logging.getLogger(__name__)
 file_handler = logging.FileHandler(filename=log_path, encoding="utf-8")

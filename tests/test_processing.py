@@ -23,7 +23,7 @@ def test_get_last_digits() -> None:
 
 
 def test_get_total_spent(spent_list) -> None:
-    assert processing.get_total_spent(spent_list) == -6.3
+    assert processing.get_total_spent(spent_list) == 6.3
 
 
 def test_get_cashback() -> None:
