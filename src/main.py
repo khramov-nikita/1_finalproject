@@ -2,13 +2,13 @@ import os
 
 import pandas as pd
 
+from src.reports import spending_by_category
 from src.services import cashback_categories
 from src.utils import read_xlsx
 from src.views import get_main_page
-from src.reports import spending_by_category
 
-path = os.path.abspath(__file__)
-xlsx_path = os.path.join(path[:-12], "data", "operations.xlsx")
+path = os.path.dirname(__file__)
+xlsx_path = os.path.join(path[:-3], "data", "operations.xlsx")
 
 
 def main() -> None:

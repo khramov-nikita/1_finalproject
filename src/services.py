@@ -4,9 +4,9 @@ import os
 from src.processing import count_categories
 from src.utils import return_dict_to_json
 
-path = os.path.abspath(__file__)
-log_path = os.path.join(path[:-16], "logs", "services.log")
-json_path = os.path.join(path[:-16], "data", "cashback.json")
+path = os.path.dirname(__file__)
+log_path = os.path.join(path[:-3], "logs", "services.log")
+json_path = os.path.join(path[:-3], "data", "cashback.json")
 
 
 app_logger = logging.getLogger(__name__)

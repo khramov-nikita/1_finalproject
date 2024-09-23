@@ -22,7 +22,7 @@ def test_get_last_digits() -> None:
     assert processing.get_last_digits("sszergszgr") == "Ошибка номера карты"
 
 
-def test_get_total_spent(spent_list) -> None:
+def test_get_total_spent(spent_list: list) -> None:
     assert processing.get_total_spent(spent_list) == 6.3
 
 

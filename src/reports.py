@@ -1,8 +1,10 @@
 import os
-from typing import Optional
 from datetime import datetime, timedelta
-from src.decorators import log_dataframe
+from typing import Optional
+
 import pandas as pd
+
+from src.decorators import log_dataframe
 
 
 @log_dataframe()

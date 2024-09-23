@@ -1,11 +1,11 @@
-import os
 import json
+import os
 
 import requests
 from dotenv import load_dotenv
 
-path = os.path.abspath(__file__)
-settings_path = os.path.join(path[:-20], "data", "user_settings.json")
+path = os.path.dirname(__file__)
+settings_path = os.path.join(path[:-3], "data", "user_settings.json")
 
 
 def get_currency_rates() -> list:

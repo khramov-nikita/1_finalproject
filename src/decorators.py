@@ -2,8 +2,8 @@ import os
 from functools import wraps
 from typing import Any
 
-path = os.path.abspath(__file__)
-log_path = os.path.join(path[:-18], "data", "log_dataframe.csv")
+path = os.path.dirname(__file__)
+log_path = os.path.join(path[:-3], "data", "log_dataframe.csv")
 
 
 def log_dataframe(file_path: str = log_path) -> Any:
@@ -19,9 +19,8 @@ def log_dataframe(file_path: str = log_path) -> Any:
             except Exception as e:
                 raise e
             else:
-                return result
-            finally:
                 result.to_csv(file_path)
+                return result
 
         return wrapper
 

@@ -4,8 +4,8 @@ import os
 
 import pandas as pd
 
-path = os.path.abspath(__file__)
-log_path = os.path.join(path[:-13], "logs", "utils.log")
+path = os.path.dirname(__file__)
+log_path = os.path.join(path[:-3], "logs", "utils.log")
 
 app_logger = logging.getLogger(__name__)
 file_handler = logging.FileHandler(filename=log_path, encoding="utf-8")

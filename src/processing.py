@@ -4,8 +4,8 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Optional
 
-path = os.path.abspath(__file__)
-log_path = os.path.join(path[:-18], "logs", "processing.log")
+path = os.path.dirname(__file__)
+log_path = os.path.join(path[:-3], "logs", "processing.log")
 
 
 app_logger = logging.getLogger(__name__)
