@@ -1,36 +1,43 @@
+import json
+import logging
 import os
 from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
+from dateutil.relativedelta import relativedelta
+
 
 from src.decorators import log_dataframe
 
 
+path = os.path.dirname(__file__)
+log_path = os.path.join(path[:-3], "logs", "services.log")
+json_path = os.path.join(path[:-3], "data", "cashback.json")
+operations_path = os.path.join(path[:-3], "data", "operations.xlsx")
+
+
+app_logger = logging.getLogger(__name__)
+file_handler = logging.FileHandler(filename=log_path, encoding="utf-8")
+file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s")
+file_handler.setFormatter(file_formatter)
+app_logger.addHandler(file_handler)
+app_logger.setLevel(logging.DEBUG)
+
+
 @log_dataframe()
-def spending_by_category(transactions: pd.DataFrame, category: str, date: Optional[str] = None) -> pd.DataFrame:
-    """
-    Функция принимает датафрейм, категорию и дату по которую будут выведены операции за последние 3 месяца
-    """
-    data = transactions.to_dict(orient="records", into=dict)
-    if date:
-        date_items = datetime.strptime(date, "%d.%m.%Y")
-    else:
-        date_items = datetime.now()
-    delta = timedelta(days=90)
-    result_list = []
-    for transaction in data:
-        transaction_date = datetime.strptime(transaction["Дата операции"], "%d.%m.%Y %H:%M:%S")
-        if (
-            1 <= transaction_date.day <= date_items.day
-            and (date_items - delta).month <= transaction_date.month <= date_items.month
-            and transaction_date.year == date_items.year
-            and transaction["Категория"] == category
-        ):
-            result_list.append(transaction)
-    result = pd.DataFrame(result_list)
-    return result
+def spending_by_category(transactions: pd.DataFrame, category: str, date: Optional[str] = None) -> json:
+    """Function for filter transactions by category of spending"""
+    app_logger.info('Попытка фильтрации транзакций по категории')
+    last_day = pd.to_datetime(date, dayfirst=True) if date else datetime.today()
+    first_day = last_day - relativedelta(months=3)
+    transactions["Дата операции"] = pd.to_datetime(transactions["Дата операции"], dayfirst=True)
+    filtered_trans_by_date = transactions[
+        (transactions["Дата операции"] >= first_day) & (transactions["Дата операции"] <= last_day)
+    ]
+    filtered_trans_by_cat = pd.DataFrame(filtered_trans_by_date[filtered_trans_by_date["Категория"] == category])
+    return filtered_trans_by_cat
 
 
 if __name__ == "__main__":
-    print(spending_by_category(pd.DataFrame([{}]), ""))
+    print(spending_by_category(pd.read_excel(operations_path), "Супермаркеты", "31.12.2021").head())
