@@ -2,10 +2,9 @@ import logging
 import os
 from collections import defaultdict
 from datetime import datetime
-from typing import Optional
+
 import pandas as pd
 from dateutil.relativedelta import relativedelta
-
 
 path = os.path.dirname(__file__)
 log_path = os.path.join(path[:-3], "logs", "processing.log")
@@ -59,37 +58,96 @@ def get_greeting(hour: int) -> str:
         return "Ошибка приветствия"
 
 
-def get_last_digits(card_number: str) -> str:
+def set_date(transactions: pd.DataFrame, date: str) -> pd.DataFrame:
     """
-    Функция выводит последние 4 цифры номера карты
+    Функция возвращает список транзакций в текущем месяце, если не указана другая дата
     """
-    app_logger.info("Получаем номер карты")
-    if card_number[-4:].isdigit():
-        return card_number[-4:]
-    else:
-        app_logger.error("Ошибка номера карты")
-        return "Ошибка номера карты"
+    app_logger.info("Получение операций за последний месяц")
+    last_day = pd.to_datetime(date, dayfirst=True) if date else datetime.today()
+    first_day = last_day - relativedelta(months=1)
+    transactions["Дата операции"] = pd.to_datetime(transactions["Дата операции"], dayfirst=True)
+    filtered_trans_by_date = transactions[
+        (transactions["Дата операции"] >= first_day) & (transactions["Дата операции"] <= last_day)
+    ]
+    return filtered_trans_by_date
 
 
-def get_total_spent(data: list) -> float:
+def get_cards(operations_df: pd.DataFrame) -> list:
     """
-    Функция возвращает сумму платежей
+    Функция возвращает список словарей с номером карты, сумме платежей по
+    конкретной карте и кешбек по конкретной карте
     """
-    app_logger.info("Получаем сумму платежей")
-    result = 0.0
-    for transaction in data:
-        if transaction <= 0:
-            result += transaction
-    result = -round(result, 2)
-    return result
+    app_logger.info("Получение информации по карте")
+    cards_list = operations_df["Номер карты"].unique()
+    cards_dict = {}
+    for card in cards_list:
+        if type(card) is not float:
+            card_sum = operations_df.loc[operations_df["Номер карты"] == card, "Сумма платежа"].sum()
+            cards_dict[f"{card}"] = {
+                "last_digits": f"{card[-4:]}",
+                "total_spent": round(float(card_sum), 2),
+                "cashback": round((float(card_sum) / 100), 2),
+            }
+    result_list = [value for key, value in cards_dict.items()]
+    return result_list
 
 
-def get_cashback(spent: float) -> float:
+def get_top_transactions(operations_df: pd.DataFrame) -> list:
     """
-    Функция возвращает кешбек на основе суммы платежей
+    Функция возвращает список последних пяти транзакций
     """
-    app_logger.info("Получаем кешбек")
-    return round(spent / 100.0, 2)
+    app_logger.info("Получение последних операций")
+    highest_five_operas = operations_df.sort_values(by="Сумма платежа", ascending=False).head()
+    highest_five_list = []
+    for i, column in highest_five_operas.iterrows():
+        highest_five_list.append(
+            {
+                "date": column["Дата платежа"],
+                "amount": column["Сумма платежа"],
+                "category": column["Категория"],
+                "description": column["Описание"],
+            }
+        )
+    result_list = [*highest_five_list]
+    return result_list
+
+
+if __name__ == "__main__":
+    data_pd = set_date(pd.read_excel(operations_path), "31.12.2021")
+    print(get_cards(data_pd))
+
+
+# def get_last_digits(card_number: str) -> str:
+#     """
+#     Функция выводит последние 4 цифры номера карты
+#     """
+#     app_logger.info("Получаем номер карты")
+#     if card_number[-4:].isdigit():
+#         return card_number[-4:]
+#     else:
+#         app_logger.error("Ошибка номера карты")
+#         return "Ошибка номера карты"
+#
+#
+# def get_total_spent(data: list) -> float:
+#     """
+#     Функция возвращает сумму платежей
+#     """
+#     app_logger.info("Получаем сумму платежей")
+#     result = 0.0
+#     for transaction in data:
+#         if transaction <= 0:
+#             result += transaction
+#     result = -round(result, 2)
+#     return result
+#
+#
+# def get_cashback(spent: float) -> float:
+#     """
+#     Функция возвращает кешбек на основе суммы платежей
+#     """
+#     app_logger.info("Получаем кешбек")
+#     return round(spent / 100.0, 2)
 
 
 # def get_top_transactions(data: list) -> list:
@@ -112,7 +170,8 @@ def get_cashback(spent: float) -> float:
 
 # def get_cards(data: list) -> list:
 #     """
-#     Функция возвращает список словарей с номером карты, сумме платежей по конкретной карте и кешбек по конкретной карте
+#     Функция возвращает список словарей с номером карты, сумме платежей по
+#     конкретной карте и кешбек по конкретной карте
 #     """
 #     app_logger.info("Получаем траты по картам")
 #     cards = []
@@ -161,51 +220,3 @@ def get_cashback(spent: float) -> float:
 #         ):
 #             result.append(transaction)
 #     return result
-
-
-def set_date(transactions: pd.DataFrame, date: str) -> pd.DataFrame:
-    last_day = pd.to_datetime(date, dayfirst=True) if date else datetime.today()
-    first_day = last_day - relativedelta(months=1)
-    transactions["Дата операции"] = pd.to_datetime(transactions["Дата операции"], dayfirst=True)
-    filtered_trans_by_date = transactions[
-        (transactions["Дата операции"] >= first_day) & (transactions["Дата операции"] <= last_day)
-        ]
-    return filtered_trans_by_date
-
-
-def get_cards(operations_df: pd.DataFrame) -> list:
-    """Function for getting info about cards"""
-    app_logger.info('Получение информации по карте...')
-    cards_list = operations_df["Номер карты"].unique()
-    cards_dict = {}
-    for card in cards_list:
-        if type(card) is not float:
-            card_sum = operations_df.loc[operations_df["Номер карты"] == card, "Сумма платежа"].sum()
-            cards_dict[f"{card}"] = {
-                "last_digits": f"{card[-4:]}",
-                "total_spent": round(float(card_sum), 2),
-                "cashback": round((float(card_sum) / 100), 2),
-            }
-    result_list = [value for key, value in cards_dict.items()]
-    return result_list
-
-
-def get_top_transactions(operations_df: pd.DataFrame) -> list:
-    highest_five_operas = operations_df.sort_values(by="Сумма платежа", ascending=False).head()
-    highest_five_list = []
-    for i, column in highest_five_operas.iterrows():
-        highest_five_list.append(
-            {
-                "date": column["Дата платежа"],
-                "amount": column["Сумма платежа"],
-                "category": column["Категория"],
-                "description": column["Описание"],
-            }
-        )
-    result_list = [*highest_five_list]
-    return result_list
-
-
-if __name__ == "__main__":
-    data_pd = set_date(pd.read_excel(operations_path), "31.12.2021")
-    print(get_cards(data_pd))

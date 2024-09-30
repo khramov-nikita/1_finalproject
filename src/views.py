@@ -27,10 +27,10 @@ def get_main_page() -> None:
     """
     date_time = datetime.datetime.now()
     hour = int(date_time.hour)
-    # data = set_date(
-    #     read_xlsx(operations_path), input("Введите дату, по которую будут показаны операции (enter - текущая дата): ")
-    # )
-    data = set_date(pd.read_excel(operations_path), "31.12.2021")
+    data = set_date(
+        pd.read_excel(operations_path),
+        input("Введите дату, по которую будут показаны операции (enter - текущая дата): "),
+    )
     result = {
         "greeting": get_greeting(hour),
         "cards": get_cards(data),

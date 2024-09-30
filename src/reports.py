@@ -7,9 +7,7 @@ from typing import Optional
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-
 from src.decorators import log_dataframe
-
 
 path = os.path.dirname(__file__)
 log_path = os.path.join(path[:-3], "logs", "services.log")
@@ -26,9 +24,9 @@ app_logger.setLevel(logging.DEBUG)
 
 
 @log_dataframe()
-def spending_by_category(transactions: pd.DataFrame, category: str, date: Optional[str] = None) -> json:
+def spending_by_category(transactions: pd.DataFrame, category: str, date: Optional[str] = None) -> pd.DataFrame:
     """Function for filter transactions by category of spending"""
-    app_logger.info('Попытка фильтрации транзакций по категории')
+    app_logger.info("Попытка фильтрации транзакций по категории")
     last_day = pd.to_datetime(date, dayfirst=True) if date else datetime.today()
     first_day = last_day - relativedelta(months=3)
     transactions["Дата операции"] = pd.to_datetime(transactions["Дата операции"], dayfirst=True)

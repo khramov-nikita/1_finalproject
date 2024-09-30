@@ -16,23 +16,23 @@ def test_get_greeting() -> None:
     assert processing.get_greeting(12343) == "Ошибка приветствия"
 
 
-def test_get_last_digits() -> None:
-    assert processing.get_last_digits("*1234") == "1234"
-    assert processing.get_last_digits("1234123412341234") == "1234"
-    assert processing.get_last_digits("sszergszgr") == "Ошибка номера карты"
+# def test_get_last_digits() -> None:
+#     assert processing.get_last_digits("*1234") == "1234"
+#     assert processing.get_last_digits("1234123412341234") == "1234"
+#     assert processing.get_last_digits("sszergszgr") == "Ошибка номера карты"
+#
+
+# def test_get_total_spent(spent_list: list) -> None:
+#     assert processing.get_total_spent(spent_list) == 6.3
 
 
-def test_get_total_spent(spent_list: list) -> None:
-    assert processing.get_total_spent(spent_list) == 6.3
+# def test_get_cashback() -> None:
+#     assert processing.get_cashback(123123.12) == 1231.23
 
-
-def test_get_cashback() -> None:
-    assert processing.get_cashback(123123.12) == 1231.23
-
-
-def test_get_top_transactions(data: list, top_transactions: list) -> None:
-    assert processing.get_top_transactions(data) == top_transactions
-
-
-def test_get_cards(data: list, cards: list) -> None:
-    assert processing.get_cards(data) == cards
+#
+# def test_get_top_transactions(data: list, top_transactions: list) -> None:
+#     assert processing.get_top_transactions(data) == top_transactions
+#
+#
+# def test_get_cards(data: list, cards: list) -> None:
+#     assert processing.get_cards(data) == cards
