@@ -2,6 +2,8 @@ import datetime
 import logging
 import os
 
+import pandas as pd
+
 from src.external_api import get_currency_rates, get_stock_prices
 from src.processing import get_cards, get_greeting, get_top_transactions, set_date
 from src.utils import read_xlsx, return_dict_to_json
@@ -25,9 +27,10 @@ def get_main_page() -> None:
     """
     date_time = datetime.datetime.now()
     hour = int(date_time.hour)
-    data = set_date(
-        read_xlsx(operations_path), input("Введите дату, по которую будут показаны операции (enter - текущая дата): ")
-    )
+    # data = set_date(
+    #     read_xlsx(operations_path), input("Введите дату, по которую будут показаны операции (enter - текущая дата): ")
+    # )
+    data = set_date(pd.read_excel(operations_path), "31.12.2021")
     result = {
         "greeting": get_greeting(hour),
         "cards": get_cards(data),
