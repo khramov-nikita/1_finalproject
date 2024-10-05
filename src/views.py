@@ -6,7 +6,7 @@ import pandas as pd
 
 from src.external_api import get_currency_rates, get_stock_prices
 from src.processing import get_cards, get_greeting, get_top_transactions, set_date
-from src.utils import read_xlsx, return_dict_to_json
+from src.utils import return_dict_to_json
 
 path = os.path.dirname(__file__)
 log_path = os.path.join(path[:-3], "logs", "views.log")

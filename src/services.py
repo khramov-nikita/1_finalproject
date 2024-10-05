@@ -7,6 +7,7 @@ from src.utils import return_dict_to_json
 path = os.path.dirname(__file__)
 log_path = os.path.join(path[:-3], "logs", "services.log")
 json_path = os.path.join(path[:-3], "data", "cashback.json")
+operations_path = os.path.join(path[:-3], "data", "operations.xlsx")
 
 
 app_logger = logging.getLogger(__name__)

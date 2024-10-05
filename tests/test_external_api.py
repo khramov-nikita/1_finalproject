@@ -1,11 +1,12 @@
 from typing import Any
 from unittest.mock import patch
+
 from src.external_api import get_currency_rates, get_stock_prices
 
 
 @patch("json.load")
 @patch("requests.get")
-def test_get_currency_rates(mock_get, mock_load) -> None:
+def test_get_currency_rates(mock_get: Any, mock_load: Any) -> None:
     mock_load.return_value = {"user_currencies": ["USD", "EUR"]}
     api_answer = {"Valute": {"USD": {"Value": 55.552}, "EUR": {"Value": 77.7777}}}
     mock_get.return_value.json.return_value = api_answer
@@ -18,7 +19,7 @@ def test_get_currency_rates(mock_get, mock_load) -> None:
 
 @patch("json.load")
 @patch("requests.get")
-def test_get_stock_prices(mock_get, mock_load) -> None:
+def test_get_stock_prices(mock_get: Any, mock_load: Any) -> None:
     mock_load.return_value = {"user_stocks": ["AAPL"]}
     api_answer = {"Global Quote": {"01. symbol": "AAPL", "05. price": 226.8}}
     mock_get.return_value.json.return_value = api_answer
@@ -27,27 +28,3 @@ def test_get_stock_prices(mock_get, mock_load) -> None:
 
     result = get_stock_prices()
     assert result == expected_result
-
-
-# [
-#         {
-#             "stock": "AAPL",
-#             "price": "226.8"
-#         },
-#         {
-#             "stock": "AMZN",
-#             "price": "186.51"
-#         },
-#         {
-#             "stock": "GOOGL",
-#             "price": "167.06"
-#         },
-#         {
-#             "stock": "MSFT",
-#             "price": "416.06"
-#         },
-#         {
-#             "stock": "TSLA",
-#             "price": "250.08"
-#         }
-#     ]
