@@ -279,16 +279,16 @@ def data_result() -> dict:
 
 @pytest.fixture
 def spent_list() -> list:
-    return [- 1.00000001, - 2.200000001, - 3.100000001]
+    return [-1.00000001, -2.200000001, -3.100000001]
 
 
 @pytest.fixture
 def top_transactions() -> list:
     return [
-        {"date": "19.07.2019", "amount": - 27.0, "category": "Дом и ремонт", "description": "OOO Nadezhda"},
-        {"date": "18.07.2019", "amount": - 49.8, "category": "Супермаркеты", "description": "SPAR"},
-        {"date": "17.07.2019", "amount": - 114.0, "category": "Фастфуд", "description": "IP Yakubovskaya M. V."},
-        {"date": "17.07.2019", "amount": - 148.0, "category": "Транспорт", "description": "Яндекс Такси"},
+        {"date": "19.07.2019", "amount": -27.0, "category": "Дом и ремонт", "description": "OOO Nadezhda"},
+        {"date": "18.07.2019", "amount": -49.8, "category": "Супермаркеты", "description": "SPAR"},
+        {"date": "17.07.2019", "amount": -114.0, "category": "Фастфуд", "description": "IP Yakubovskaya M. V."},
+        {"date": "17.07.2019", "amount": -148.0, "category": "Транспорт", "description": "Яндекс Такси"},
         {
             "date": "16.07.2019",
             "amount": 189.0,
@@ -304,5 +304,24 @@ def cards() -> list:
 
 
 @pytest.fixture
-def result() -> pd.DataFrame:
-    return pd.DataFrame()
+def get_operations_df():
+    df = pd.DataFrame(
+        {
+            "Дата операции": ["31.12.2021 16:42:04", "07.04.2020 19:41:58"],
+            "Дата платежа": ["31.12.2021", "07.04.2020"],
+            "Номер карты": ["*7197", "*7197"],
+            "Статус": ["OK", "OK"],
+            "Сумма операции": [-64.00, -100.00],
+            "Валюта операции": ["RUB", "RUB"],
+            "Сумма платежа": [-64.00, -100.00],
+            "Валюта платежа": ["RUB", "RUB"],
+            "Кэшбэк": [0, 0],
+            "Категория": ["Супермаркеты", "Фастфуд"],
+            "MCC": ["5411", "5814"],
+            "Описание": ["Колхоз", "IP Yakubovskaya M. V."],
+            "Бонусы (включая кэшбэк)": [1.00, 2.00],
+            "Округление на инвесткопилку": [0.00, 0.00],
+            "Сумма операции с округлением": [64.00, 100.00],
+        }
+    )
+    return df
